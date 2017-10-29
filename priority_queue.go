@@ -8,12 +8,12 @@ import (
 type Node struct {
 	Key      interface{}
 	Value    interface{}
-	Priority int
+	Priority float64
 	Index    int
 	mutex    sync.RWMutex
 }
 
-func NewNode(key interface{}, v interface{}, priority int) *Node {
+func NewNode(key interface{}, v interface{}, priority float64) *Node {
 	return &Node{
 		Key:      key,
 		Value:    v,
@@ -40,7 +40,7 @@ func (n *Node) GetIndex() int {
 	return n.Index
 }
 
-func (n *Node) UpdatePriority(newPrio int) {
+func (n *Node) UpdatePriority(newPrio float64) {
 	defer n.mutex.Unlock()
 	n.mutex.Lock()
 	n.Priority = newPrio
