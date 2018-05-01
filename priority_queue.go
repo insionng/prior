@@ -13,10 +13,10 @@ type Node struct {
 	mutex    sync.RWMutex
 }
 
-func NewNode(key interface{}, v interface{}, priority float64) *Node {
+func NewNode(key interface{}, value interface{}, priority float64) *Node {
 	return &Node{
 		Key:      key,
-		Value:    v,
+		Value:    value,
 		Priority: priority,
 		Index:    -1,
 	}
