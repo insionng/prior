@@ -19,7 +19,6 @@ prior is a priority queue based on golang container/heap.
 
 # Example
 
-`go
     package main
 
     import (
@@ -64,4 +63,3 @@ prior is a priority queue based on golang container/heap.
             }
         }
     }
-`
