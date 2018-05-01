@@ -44,7 +44,7 @@ func TestPriorityQueue(t *testing.T) {
 	pq.Remove(n2.GetIndex())
 	pq.Remove(3)
 
-	for n := 0; ; {
+	for n := 0; pq.Length() > 0; {
 		n++
 		v := pq.Pop()
 		if n == 1 {
