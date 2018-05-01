@@ -49,7 +49,8 @@ prior is a priority queue based on golang container/heap.
                 meta.Source = "zh"
             }
 
-            pq.Push(prior.NewNode(nil, meta, meta.Price*-1))
+            //pq.Push(prior.NewNode(nil, meta, meta.Price*-1))
+            pq.AddNode(nil, meta, meta.Price*-1)
         }
 
         //读取队列
