@@ -22,6 +22,10 @@ func NewNode(key, value interface{}, priority float64) *Node {
 	}
 }
 
+func AddNode(pq *PriorityQueue, key, value interface{}, priority float64) {
+	pq.Push(NewNode(key, value, priority))
+}
+
 func (n *Node) GetKey() interface{} {
 	defer n.mutex.RUnlock()
 	n.mutex.RLock()
@@ -79,6 +83,11 @@ func (nodes *Nodes) Pop() interface{} {
 type PriorityQueue struct {
 	nodes Nodes
 	mutex sync.RWMutex
+}
+
+func (pq *PriorityQueue) AddNode(key, value interface{}, priority float64) {
+	pq.Push(NewNode(key, value, priority))
+	return
 }
 
 func (pq *PriorityQueue) Push(n *Node) {
