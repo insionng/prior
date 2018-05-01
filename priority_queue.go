@@ -87,7 +87,6 @@ type PriorityQueue struct {
 
 func (pq *PriorityQueue) AddNode(key, value interface{}, priority float64) {
 	pq.Push(NewNode(key, value, priority))
-	return
 }
 
 func (pq *PriorityQueue) Push(n *Node) {

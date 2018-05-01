@@ -43,7 +43,7 @@ prior is a priority queue based on golang container/heap.
             meta.Symbol = "glod:usd"
             meta.Price = 1000.8 + float64(i)
             meta.Quantity = 0.8 + float64(i)
-            if i/2 == 2 {
+            if i%2==0 {
                 meta.Source = "en"
             } else {
                 meta.Source = "zh"
