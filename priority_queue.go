@@ -13,7 +13,7 @@ type Node struct {
 	mutex    sync.RWMutex
 }
 
-func NewNode(key interface{}, value interface{}, priority float64) *Node {
+func NewNode(key, value interface{}, priority float64) *Node {
 	return &Node{
 		Key:      key,
 		Value:    value,

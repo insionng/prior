@@ -44,20 +44,31 @@ func TestPriorityQueue(t *testing.T) {
 	pq.Remove(n2.GetIndex())
 	pq.Remove(3)
 
-	v = pq.Pop()
-	if v.GetKey().(string) != "bootstrap" {
-		t.Fatal()
-	}
-	v = pq.Pop()
-	if v.GetKey().(int) != 3 {
-		t.Fatal()
-	} else {
-		if v.GetValue().(string) != "value" {
-			t.Fatal()
+	for n := 0; ; {
+		n++
+		v := pq.Pop()
+		if n == 1 {
+			if v.GetKey().(string) != "bootstrap" {
+				t.Fatal()
+			}
 		}
-	}
-	v = pq.Pop()
-	if v != nil {
-		t.Fatal()
+
+		if n == 2 {
+			if v.GetKey().(int) != 3 {
+				t.Fatal()
+			} else {
+				if v.GetValue().(string) != "value" {
+					t.Fatal()
+				}
+			}
+		}
+
+		if n == 3 {
+			if v != nil {
+				t.Fatal()
+			}
+			break
+		}
+
 	}
 }
