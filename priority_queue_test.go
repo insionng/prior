@@ -94,19 +94,19 @@ func TestPriorityQueue(t *testing.T) {
 	pq.Push(n2)
 	pq.Push(n3)
 
+	fmt.Println("B Length>", pq.Length())
 	/*
 		d := pq.Pull("start")
 		if d != nil {
-			fmt.Println("B Length>", pq.Length())
 
 			idx := d.GetIndex()
 			fmt.Println("idx>", idx)
 
 			pq.Remove(idx)
-			fmt.Println("A Length>", pq.Length())
 		}
 	*/
 	pq.RemoveNode("start")
+	fmt.Println("A Length>", pq.Length())
 
 	for n := 0; pq.Length() > 0; {
 		n++
