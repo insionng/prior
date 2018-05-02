@@ -16,6 +16,59 @@ func TestPriorityQueue(t *testing.T) {
 	pq.Push(n2)
 	pq.Push(n3)
 
+	var n int
+	if nz := pq.Pull("start"); nz != nil {
+		fmt.Println("Get key from Pull>", nz.GetKey())
+		fmt.Println("Get value from Pull>", nz.GetValue())
+		fmt.Println("Get index from Pull>", nz.GetIndex())
+		fmt.Println("Length>", pq.Length())
+		n++
+	}
+	if nz := pq.Pull("start", 2); nz != nil {
+		fmt.Println("Get key from Pull>", nz.GetKey())
+		fmt.Println("Get value from Pull>", nz.GetValue())
+		fmt.Println("Get index from Pull>", nz.GetIndex())
+		fmt.Println("Length>", pq.Length())
+		n++
+	}
+	if nz := pq.Pull(nil, 2); nz != nil {
+		fmt.Println("Get key from Pull>", nz.GetKey())
+		fmt.Println("Get value from Pull>", nz.GetValue())
+		fmt.Println("Get index from Pull>", nz.GetIndex())
+		fmt.Println("Length>", pq.Length())
+		n++
+	}
+	if nz := pq.Pull(nil, "value"); nz != nil {
+		fmt.Println("Get key from Pull>", nz.GetKey())
+		fmt.Println("Get value from Pull>", nz.GetValue())
+		fmt.Println("Get index from Pull>", nz.GetIndex())
+		fmt.Println("Length>", pq.Length())
+		n++
+	}
+	if nz := pq.Pull("bootstrap"); nz != nil {
+		fmt.Println("Get key from Pull>", nz.GetKey())
+		fmt.Println("Get value from Pull>", nz.GetValue())
+		fmt.Println("Get index from Pull>", nz.GetIndex())
+		fmt.Println("Length>", pq.Length())
+		n++
+	}
+	if nz := pq.Pull("bootstrap", func() {
+		fmt.Println("bootstrap")
+	}); nz == nil {
+		fmt.Println("pass func")
+		n++
+	}
+	if nz := pq.Pull(3); nz != nil {
+		fmt.Println("Get key from Pull>", nz.GetKey())
+		fmt.Println("Get value from Pull>", nz.GetValue())
+		fmt.Println("Get index from Pull>", nz.GetIndex())
+		fmt.Println("Length>", pq.Length())
+		n++
+	}
+	if n != 7 {
+		fmt.Println("pull has error")
+	}
+
 	v := pq.Pop()
 	if v.GetKey().(string) != "bootstrap" {
 		t.Fatal()
@@ -41,8 +94,19 @@ func TestPriorityQueue(t *testing.T) {
 	pq.Push(n2)
 	pq.Push(n3)
 
-	pq.Remove(n2.GetIndex())
-	pq.Remove(3)
+	/*
+		d := pq.Pull("start")
+		if d != nil {
+			fmt.Println("B Length>", pq.Length())
+
+			idx := d.GetIndex()
+			fmt.Println("idx>", idx)
+
+			pq.Remove(idx)
+			fmt.Println("A Length>", pq.Length())
+		}
+	*/
+	pq.RemoveNode("start")
 
 	for n := 0; pq.Length() > 0; {
 		n++
@@ -71,4 +135,5 @@ func TestPriorityQueue(t *testing.T) {
 		}
 
 	}
+
 }

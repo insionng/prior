@@ -26,6 +26,12 @@ func AddNode(pq *PriorityQueue, key, value interface{}, priority float64) {
 	pq.Push(NewNode(key, value, priority))
 }
 
+func RemoveNode(pq *PriorityQueue, values ...interface{}) {
+	if node := pq.Pull(values...); node != nil {
+		pq.Remove(node.GetIndex())
+	}
+}
+
 func (n *Node) GetKey() interface{} {
 	defer n.mutex.RUnlock()
 	n.mutex.RLock()
@@ -64,10 +70,73 @@ func (nodes Nodes) Swap(i, j int) {
 	nodes[j].Index = j
 }
 
-func (nodes *Nodes) Push(v interface{}) {
-	node := v.(*Node)
-	node.Index = len(*nodes)
-	*nodes = append(*nodes, node)
+func (nodes *Nodes) Push(node interface{}) {
+	iNode := node.(*Node)
+	iNode.Index = len(*nodes)
+	*nodes = append(*nodes, iNode)
+}
+
+//Pull 拉取匹配的第一个Node返回
+func (nodes *Nodes) Pull(values ...interface{}) *Node {
+	var key, value interface{}
+	if len(values) > 0 {
+		if len(values) >= 2 {
+			key = values[0]
+			value = values[1]
+			if key == nil && value == nil {
+				return nil
+			}
+			if key != nil {
+				if _, fKey := key.(func()); fKey {
+					return nil
+				}
+			}
+			if value != nil {
+				if _, fValue := value.(func()); fValue {
+					return nil
+				}
+			}
+
+			if key != nil && value != nil {
+				for _, node := range *nodes {
+					if (node.GetKey() == key) && (node.GetValue() == value) {
+						return node
+					}
+				}
+			}
+			if key != nil && value == nil {
+				for _, node := range *nodes {
+					if node.GetKey() == value {
+						return node
+					}
+				}
+			}
+			if key == nil && value != nil {
+				for _, node := range *nodes {
+					if node.GetValue() == value {
+						return node
+					}
+				}
+			}
+		} else {
+
+			if key = values[0]; key == nil {
+				return nil
+			}
+			//不支持函数比较
+			if _, fKey := key.(func()); fKey {
+				return nil
+			}
+
+			for _, node := range *nodes {
+				if node.GetKey() == key {
+					return node
+				}
+			}
+		}
+
+	}
+	return nil
 }
 
 func (nodes *Nodes) Pop() interface{} {
@@ -89,10 +158,82 @@ func (pq *PriorityQueue) AddNode(key, value interface{}, priority float64) {
 	pq.Push(NewNode(key, value, priority))
 }
 
+func (pq *PriorityQueue) RemoveNode(values ...interface{}) {
+	if node := pq.Pull(values...); node != nil {
+		pq.Remove(node.GetIndex())
+	}
+}
+
 func (pq *PriorityQueue) Push(n *Node) {
 	defer pq.mutex.Unlock()
 	pq.mutex.Lock()
 	heap.Push(&(pq.nodes), n)
+}
+
+//Pull 拉取匹配的第一个Node返回
+func (pq *PriorityQueue) Pull(values ...interface{}) *Node {
+	defer pq.mutex.RUnlock()
+	pq.mutex.RLock()
+
+	var key, value interface{}
+	if len(values) > 0 {
+		if len(values) >= 2 {
+			key = values[0]
+			value = values[1]
+			if key == nil && value == nil {
+				return nil
+			}
+			if key != nil {
+				if _, fKey := key.(func()); fKey {
+					return nil
+				}
+			}
+			if value != nil {
+				if _, fValue := value.(func()); fValue {
+					return nil
+				}
+			}
+
+			if key != nil && value != nil {
+				for _, node := range pq.nodes {
+					if (node.GetKey() == key) && (node.GetValue() == value) {
+						return node
+					}
+				}
+			}
+			if key != nil && value == nil {
+				for _, node := range pq.nodes {
+					if node.GetKey() == value {
+						return node
+					}
+				}
+			}
+			if key == nil && value != nil {
+				for _, node := range pq.nodes {
+					if node.GetValue() == value {
+						return node
+					}
+				}
+			}
+		} else {
+
+			if key = values[0]; key == nil {
+				return nil
+			}
+			//不支持函数比较
+			if _, fKey := key.(func()); fKey {
+				return nil
+			}
+
+			for _, node := range pq.nodes {
+				if node.GetKey() == key {
+					return node
+				}
+			}
+		}
+
+	}
+	return nil
 }
 
 func (pq *PriorityQueue) Pop() *Node {
@@ -111,6 +252,7 @@ func (pq *PriorityQueue) Remove(index int) {
 		return
 	}
 	pq.mutex.RUnlock()
+
 	pq.mutex.Lock()
 	heap.Remove(&(pq.nodes), index)
 	pq.mutex.Unlock()
