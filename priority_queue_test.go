@@ -16,6 +16,9 @@ func TestPriorityQueue(t *testing.T) {
 	pq.Push(n2)
 	pq.Push(n3)
 
+	pq.Remove(-1000) //no panic
+	pq.Remove(1000)  //no panic
+
 	var n int
 	if nz := pq.Pull("start"); nz != nil {
 		fmt.Println("Get key from Pull>", nz.GetKey())

@@ -247,17 +247,15 @@ func (pq *PriorityQueue) Pop() *Node {
 }
 
 func (pq *PriorityQueue) Remove(index int) {
-	pq.mutex.RLock()
-	if index < 0 || index >= len(pq.nodes) {
+	defer pq.mutex.Unlock()
+	pq.mutex.Lock()
+	if (index < 0) || (index >= len(pq.nodes)) {
 		return
 	}
-	pq.mutex.RUnlock()
-
-	pq.mutex.Lock()
 	heap.Remove(&(pq.nodes), index)
-	pq.mutex.Unlock()
 }
 
+//Length 优先级队列长度
 func (pq *PriorityQueue) Length() int {
 	defer pq.mutex.RUnlock()
 	pq.mutex.RLock()
